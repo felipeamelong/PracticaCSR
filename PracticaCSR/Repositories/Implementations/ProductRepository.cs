@@ -1,10 +1,11 @@
 using PracticaCSR.Entities;
 using PracticaCSR.Models;
 using PracticaCSR.Models.DTOs.Requests;
+using PracticaCSR.Repositories.Interfaces;
 
 namespace PracticaCSR.Repositories.Implementations;
 
-public class ProductRepository
+public class ProductRepository : IProductRepository
 {
     private static List<Product> _products = new()
     {

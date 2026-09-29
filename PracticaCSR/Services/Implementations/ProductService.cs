@@ -2,16 +2,13 @@ using PracticaCSR.Entities;
 using PracticaCSR.Models.DTOs.Requests;
 using PracticaCSR.Models.DTOs.Reponses;
 using PracticaCSR.Repositories.Implementations;
+using PracticaCSR.Services.Interfaces;
+
 namespace PracticaCSR.Services.Implementations;
 
-public class ProductService
+public class ProductService : IProductService
 {
-    private readonly ProductRepository _productRepository;
-
-    public ProductService()
-    {
-        _productRepository = new ProductRepository();
-    }
+    private ProductRepository _productRepository = new ProductRepository();
     
     public List<ProductForReadDto> GetAllProducts()
     {
