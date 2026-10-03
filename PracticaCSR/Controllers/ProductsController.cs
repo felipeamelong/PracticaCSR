@@ -3,6 +3,7 @@ using PracticaCSR.Entities;
 using PracticaCSR.Models.DTOs.Reponses;
 using PracticaCSR.Models.DTOs.Requests;
 using PracticaCSR.Services.Implementations;
+using PracticaCSR.Services.Interfaces;
 
 namespace PracticaCSR.Controllers;
 
@@ -11,7 +12,12 @@ namespace PracticaCSR.Controllers;
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
-    private ProductService _service = new ProductService();
+    private readonly IProductService _service;
+
+    public ProductsController(IProductService service)
+    {
+        _service = service;
+    }
     
     [HttpGet]
     public IActionResult GetAllProducts()
