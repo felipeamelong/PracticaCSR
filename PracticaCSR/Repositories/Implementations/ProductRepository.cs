@@ -47,4 +47,10 @@ public class ProductRepository : IProductRepository
     {
         _products.Remove(product);
     }
+
+    public List<Product> SearchProductsByName(string name)
+    {
+        List<Product> product = _products.Where(p => p.Name.ToLower().Contains(name.ToLower())).ToList();
+        return product;
+    }
 }

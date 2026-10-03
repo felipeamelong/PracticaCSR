@@ -71,4 +71,43 @@ public class ProductService : IProductService
         var product = _productRepository.GetProductById(id);
         _productRepository.DeleteProduct(product);
     }
+
+    public List<ProductForReadDto> SearchProductsByName(string name)
+    {
+        var products = _productRepository.SearchProductsByName(name);
+        return products.Select(p => new ProductForReadDto
+        {
+            Id = p.Id,
+            Name = p.Name,
+        }).ToList();
+    }
+
+    public ProductStatsDto GetStats()
+    {
+        var products = _productRepository.GetAllProducts();
+        
+        if (products == null || !products.Any())
+        {
+            return new ProductStatsDto
+            {
+                Total = 0,
+                AveragePrice = 0,
+                MostExpensiveName = "Sin productos"
+            };
+        }
+        
+        int total = products.Count;
+        decimal averagePrice = products.Average(p => p.Price); 
+        string mostExpensiveName = products
+            .OrderByDescending(p => p.Price)
+            .First()
+            .Name;
+
+        return new ProductStatsDto
+        {
+            Total = total,
+            AveragePrice = averagePrice,
+            MostExpensiveName = mostExpensiveName
+        };
+    }
 }

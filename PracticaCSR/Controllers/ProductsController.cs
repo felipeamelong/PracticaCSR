@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PracticaCSR.Entities;
+using PracticaCSR.Models.DTOs.Reponses;
 using PracticaCSR.Models.DTOs.Requests;
 using PracticaCSR.Services.Implementations;
 
@@ -59,5 +60,23 @@ public class ProductsController : ControllerBase
         }
         _service.DeleteProduct(id);
         return NoContent();
+    }
+    
+    [HttpGet("search")]
+    public ActionResult<List<ProductForReadDto>> SearchProducts([FromQuery] string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return Ok(new List<ProductForReadDto>());
+        }
+        var products = _service.SearchProductsByName(name);
+        return Ok(products);
+    }
+    
+    [HttpGet("stats")]
+    public ActionResult<ProductStatsDto> GetStats()
+    {
+        var stats = _service.GetStats();
+        return Ok(stats);
     }
 }
