@@ -34,8 +34,15 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public IActionResult CreateProduct([FromBody] ProductForCreateDto dto)
     {
-        var product = _service.CreateProduct(dto);
-        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);
+        try
+        {
+            var createdProduct = _service.CreateProduct(dto);
+            return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
     }
     
     [HttpPut("{id}")]

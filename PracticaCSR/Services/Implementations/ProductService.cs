@@ -39,6 +39,10 @@ public class ProductService : IProductService
 
     public ProductForReadDto CreateProduct(ProductForCreateDto dto)
     {
+        if (ProductExistsWithName(dto.Name))
+        {
+            throw new InvalidOperationException("Ya existe un producto con ese nombre.");
+        }
         int id = _productRepository.GetAllProducts().Max(p=>p.Id) + 1;
         Product product = new Product()
         {
@@ -109,5 +113,11 @@ public class ProductService : IProductService
             AveragePrice = averagePrice,
             MostExpensiveName = mostExpensiveName
         };
+    }
+    
+    public bool ProductExistsWithName(string name)
+    {
+        var allProducts = _productRepository.GetAllProducts();
+        return allProducts.Any(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
     }
 }
